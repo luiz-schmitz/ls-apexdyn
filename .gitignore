@@ -1,0 +1,10 @@
+# Build directories
+cmake-build-*/
+build/
+
+# CLion / JetBrains IDE files
+.idea/
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
