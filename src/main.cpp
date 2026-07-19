@@ -1,5 +1,6 @@
 #include <iostream>
 #include "DirectoryInspection.h"
+#include "mini/ini.h"
 
 int main(int argc, char* argv[]) {
     if (argc < 3) {
