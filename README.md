@@ -63,4 +63,10 @@ This project is developed against Assetto Corsa vehicle data files, extracted lo
 
 ## Architecture
 
-The codebase separates
+The codebase separates concerns as the project grows:
+
+- `include/InspectionOutcome.h` — plain data type representing the result of inspecting a directory
+- `include/DirectoryInspection.h` / `src/DirectoryInspection.cpp` — inspection logic, decoupled from CLI argument handling
+- `src/main.cpp` — thin orchestration layer (argument parsing, invoking inspection, reporting results)
+
+Design decisions are logged in [`docs/decisions.md`](docs/decisions.md) as the project evolves.
