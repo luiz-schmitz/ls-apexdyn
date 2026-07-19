@@ -11,7 +11,7 @@ include(FetchContent)
 FetchContent_Declare(
         mini
         GIT_REPOSITORY https://github.com/pulzed/mINI.git
-        GIT_TAG master
+        GIT_TAG d882d7f4a42991fb3e4635eda8e8777e5b3cd153
 )
 FetchContent_MakeAvailable(mini)
 

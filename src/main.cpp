@@ -38,12 +38,14 @@ int main(int argc, char* argv[]) {
     std::cout << "rear tyre radius: " << vehicle.rearTyreRadius << " m" << std::endl;
 
     std::filesystem::path lutPath = dataDir / "power.lut";
-    loadTorqueCurve(lutPath);
-    std::vector<TorqueCurvePoint> curve = loadTorqueCurve(lutPath);
-    std::cout << "torque curve points: " << curve.size() << std::endl;
-
-    std::cout << "first point: rpm=" << curve.front().rpm << " torque=" << curve.front().torque << std::endl;
-    std::cout << "last point: rpm=" << curve.back().rpm << " torque=" << curve.back().torque << std::endl;
+    TorqueCurveLoadResult curveResult = loadTorqueCurve(lutPath);
+    if (!curveResult.isValid) {
+        std::cout << "error: " << curveResult.message << std::endl;
+        return 1;
+    }
+    std::cout << "torque curve points: " << curveResult.points.size() << std::endl;
+    std::cout << "first point: rpm=" << curveResult.points.front().rpm << " torque=" << curveResult.points.front().torque << std::endl;
+    std::cout << "last point: rpm=" << curveResult.points.back().rpm << " torque=" << curveResult.points.back().torque << std::endl;
 
     return 0;
 }
