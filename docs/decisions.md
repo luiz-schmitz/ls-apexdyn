@@ -48,3 +48,18 @@ depend on VehicleParameters alone, without ever referencing INI
 files or the mINI library directly. This mirrors the architecture
 outlined for the project: Assetto Corsa files → loader → independent
 vehicle model → simulation modules.
+
+## ADR 004: Load VehicleParameters from a data directory, not a single file
+
+**Date:** 2026-07-19
+
+**Context:** VehicleParameters now pulls fields from multiple files
+(car.ini, drivetrain.ini, suspensions.ini), not just car.ini.
+
+**Decision:** loadVehicleParameters now takes the vehicle's data
+directory and resolves each file internally, instead of the caller
+passing a single file path.
+
+**Consequences:** Adding a new field means editing the struct and
+loadVehicleParameters — a small, acceptable cost for keeping
+VehicleParameters typed and explicit instead of a generic key lookup.
