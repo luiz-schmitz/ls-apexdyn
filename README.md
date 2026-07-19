@@ -16,13 +16,13 @@ This project is being developed step by step as a learning exercise in:
 
 ## Current status
 
-`apexdyn` can inspect a vehicle's data directory and load a subset of its physical parameters (mass, traction, gear count, suspension types) from Assetto Corsa `.ini` files into a typed `VehicleParameters` model.
+`apexdyn` can inspect a vehicle's data directory, load a subset of its physical parameters (mass, traction, gear count, final drive ratio, wheelbase, CG location, tyre radii, suspension types) from Assetto Corsa `.ini` files, and parse the engine's torque curve from `.lut` files — all into typed models with error handling for missing or malformed data.
 
 See [`CHANGELOG.md`](CHANGELOG.md) for the full history of what has been implemented, and [`docs/decisions.md`](docs/decisions.md) for the reasoning behind key architectural decisions.
 
 **Planned next:**
-- Parsing engine torque/power curves from `.lut` files
-- Basic vehicle characterization (power-to-weight ratio, wheel force curves, etc.)
+- Torque curve interpolation
+- Wheel force vs. vehicle speed per gear
 - Longitudinal acceleration simulation
 - CSV/report output
 - Comparison against Assetto Corsa telemetry data

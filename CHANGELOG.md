@@ -22,12 +22,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - File-existence checks in `VehicleLoader` before attempting to read each INI file
 - `VehicleLoader` test suite (`tests/VehicleLoaderTests.cpp`) using synthetic fixture data (`tests/fixtures/sample_vehicle/`)
 - `wheelBase`, `cgLocation`, `finalDriveRatio`, `frontTyreRadius`, `rearTyreRadius` fields in `VehicleParameters`
+- `TorqueCurve` module (`loadTorqueCurve`): parses engine torque curves from `.lut` files (RPM|Torque pairs) into `TorqueCurvePoint` vectors, returned via `TorqueCurveLoadResult` for error handling
 
 ### Changed
 - `loadVehicleParameters` now accepts a vehicle data directory instead of a single `car.ini` path, resolving all required files internally
 
 ### Fixed
 - Crash (`std::out_of_range`) when a vehicle data directory was missing required `.ini` files
+- mINI dependency now pinned to a fixed commit (previously tracked `master`, which was documented but not actually applied)
 
 ## Notes
 
