@@ -18,8 +18,13 @@ int main(int argc, char* argv[]) {
     }
 
     std::filesystem::path carIniPath = dataDir / "car.ini";
-    VehicleParameters vehicle = loadVehicleParameters(carIniPath);
+    VehicleParameters vehicle = loadVehicleParameters(dataDir);
+    std::cout << "car name: " << vehicle.carName << std::endl;
     std::cout << "total mass: " << vehicle.totalMass << " kg" << std::endl;
+    std::cout << "traction: " << vehicle.traction << std::endl;
+    std::cout << "gear count: " << vehicle.gearCount << std::endl;
+    std::cout << "front suspension: " << vehicle.frontSuspensionType << std::endl;
+    std::cout << "rear suspension: " << vehicle.rearSuspensionType << std::endl;
 
     return 0;
 }

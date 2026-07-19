@@ -3,4 +3,4 @@
 #include <filesystem>
 #include "VehicleParameters.h"
 
-VehicleParameters loadVehicleParameters(const std::filesystem::path& carIniPath);
+VehicleParameters loadVehicleParameters(const std::filesystem::path& dataDir);
