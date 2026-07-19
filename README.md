@@ -16,12 +16,13 @@ This project is being developed step by step as a learning exercise in:
 
 ## Current status
 
-**Implemented:**
-- `apexdyn inspect <data-directory>` — validates a directory path and counts `.ini`/`.lut` files within it, returning appropriate exit codes for scripting/automation use.
+`apexdyn` can inspect a vehicle's data directory and load a subset of its physical parameters (mass, traction, gear count, suspension types) from Assetto Corsa `.ini` files into a typed `VehicleParameters` model.
+
+See [`CHANGELOG.md`](CHANGELOG.md) for the full history of what has been implemented, and [`docs/decisions.md`](docs/decisions.md) for the reasoning behind key architectural decisions.
 
 **Planned next:**
-- Parsing vehicle parameters from `.ini`/`.lut` files into an independent `VehicleParameters` model
-- Basic vehicle characterization (power-to-weight ratio, gear ratios, etc.)
+- Parsing engine torque/power curves from `.lut` files
+- Basic vehicle characterization (power-to-weight ratio, wheel force curves, etc.)
 - Longitudinal acceleration simulation
 - CSV/report output
 - Comparison against Assetto Corsa telemetry data
@@ -29,7 +30,7 @@ This project is being developed step by step as a learning exercise in:
 ## Building
 
 **Requirements:**
-- CMake 3.31+
+- CMake 3.20+
 - A C++17-capable compiler (developed with MinGW/GCC on Windows)
 
 ```powershell
@@ -45,12 +46,18 @@ The executable will be generated at `cmake-build-debug/apexdyn.exe`.
 apexdyn inspect <data-directory>
 ```
 
-Validates that `<data-directory>` exists and is a directory, then counts `.ini` and `.lut` files within it.
+Validates that `<data-directory>` exists and is a directory, counts `.ini`/`.lut` files within it, and loads available vehicle parameters.
 
 **Example:**
 ```powershell
 apexdyn inspect C:\path\to\vehicle\data
 found 28 .ini file(s) and 18 .lut file(s) in C:\path\to\vehicle\data
+car name: TOYOTA AE86
+total mass: 995 kg
+traction: RWD
+gear count: 5
+front suspension: STRUT
+rear suspension: AXLE
 ```
 
 **Exit codes:**
@@ -65,8 +72,10 @@ This project is developed against Assetto Corsa vehicle data files, extracted lo
 
 The codebase separates concerns as the project grows:
 
-- `include/InspectionOutcome.h` — plain data type representing the result of inspecting a directory
-- `include/DirectoryInspection.h` / `src/DirectoryInspection.cpp` — inspection logic, decoupled from CLI argument handling
-- `src/main.cpp` — thin orchestration layer (argument parsing, invoking inspection, reporting results)
+- `include/InspectionOutcome.h` / `include/DirectoryInspection.h` + `src/DirectoryInspection.cpp` — directory validation and file counting, decoupled from CLI argument handling
+- `include/IniValueParsing.h` + `src/IniValueParsing.cpp` — generic, typed extraction of values from INI files (via the [mINI](https://github.com/pulzed/mINI) library)
+- `include/VehicleParameters.h` — a data-only model of a vehicle's physical parameters, independent of its data source
+- `include/VehicleLoader.h` + `src/VehicleLoader.cpp` — translates Assetto Corsa files into a `VehicleParameters` instance
+- `src/main.cpp` — thin orchestration layer (argument parsing, invoking inspection/loading, reporting results)
 
 Design decisions are logged in [`docs/decisions.md`](docs/decisions.md) as the project evolves.
