@@ -17,7 +17,13 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    VehicleParameters vehicle = loadVehicleParameters(dataDir);
+    VehicleLoadResult result = loadVehicleParameters(dataDir);
+    if (!result.isValid) {
+        std::cout << "error: " << result.message << std::endl;
+        return 1;
+    }
+    VehicleParameters vehicle = result.parameters;
+
     std::cout << "car name: " << vehicle.carName << std::endl;
     std::cout << "total mass: " << vehicle.totalMass << " kg" << std::endl;
     std::cout << "traction: " << vehicle.traction << std::endl;

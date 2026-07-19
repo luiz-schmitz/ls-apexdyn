@@ -1,3 +1,4 @@
+// IniValueParsing.cpp
 #include "IniValueParsing.h"
 
 static std::string extractCleanValue(mINI::INIStructure& ini, const std::string& section, const std::string& key) {
@@ -6,18 +7,41 @@ static std::string extractCleanValue(mINI::INIStructure& ini, const std::string&
     std::string valueOnly = raw.substr(0, semicolonPos);
 
     size_t start = valueOnly.find_first_not_of(" \t");
+    if (start == std::string::npos) {
+        return "";
+    }
     size_t end = valueOnly.find_last_not_of(" \t");
     return valueOnly.substr(start, end - start + 1);
 }
 
-double readDoubleValue(mINI::INIStructure& ini, const std::string& section, const std::string& key) {
-    return std::stod(extractCleanValue(ini, section, key));
+std::optional<double> readDoubleValue(mINI::INIStructure& ini, const std::string& section, const std::string& key) {
+    std::string cleaned = extractCleanValue(ini, section, key);
+    if (cleaned.empty()) {
+        return std::nullopt;
+    }
+    try {
+        return std::stod(cleaned);
+    } catch (...) {
+        return std::nullopt;
+    }
 }
 
-int readIntValue(mINI::INIStructure& ini, const std::string& section, const std::string& key) {
-    return std::stoi(extractCleanValue(ini, section, key));
+std::optional<int> readIntValue(mINI::INIStructure& ini, const std::string& section, const std::string& key) {
+    std::string cleaned = extractCleanValue(ini, section, key);
+    if (cleaned.empty()) {
+        return std::nullopt;
+    }
+    try {
+        return std::stoi(cleaned);
+    } catch (...) {
+        return std::nullopt;
+    }
 }
 
-std::string readStringValue(mINI::INIStructure& ini, const std::string& section, const std::string& key) {
-    return extractCleanValue(ini, section, key);
+std::optional<std::string> readStringValue(mINI::INIStructure& ini, const std::string& section, const std::string& key) {
+    std::string cleaned = extractCleanValue(ini, section, key);
+    if (cleaned.empty()) {
+        return std::nullopt;
+    }
+    return cleaned;
 }

@@ -1,6 +1,5 @@
 #pragma once
-
 #include <filesystem>
-#include "VehicleParameters.h"
+#include "VehicleLoadResult.h"
 
-VehicleParameters loadVehicleParameters(const std::filesystem::path& dataDir);
+VehicleLoadResult loadVehicleParameters(const std::filesystem::path& dataDir);
