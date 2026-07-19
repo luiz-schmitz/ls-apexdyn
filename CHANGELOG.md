@@ -17,9 +17,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
     - Fields: car name, total mass, traction type, gear count, front/rear suspension type
 - `docs/decisions.md`: architecture decision log (ADR 001–004)
 - Project `README.md`
+- - `VehicleLoadResult` struct: signals success/failure when loading vehicle parameters, with a diagnostic message
+- Error handling in `IniValueParsing` (`readDoubleValue`/`readIntValue`/`readStringValue` now return `std::optional`) to avoid crashes on missing or invalid INI values
+- File-existence checks in `VehicleLoader` before attempting to read each INI file
+- `VehicleLoader` test suite (`tests/VehicleLoaderTests.cpp`) using synthetic fixture data (`tests/fixtures/sample_vehicle/`)
+- `wheelBase`, `cgLocation`, `finalDriveRatio`, `frontTyreRadius`, `rearTyreRadius` fields in `VehicleParameters`
 
 ### Changed
 - `loadVehicleParameters` now accepts a vehicle data directory instead of a single `car.ini` path, resolving all required files internally
+
+### Fixed
+- Crash (`std::out_of_range`) when a vehicle data directory was missing required `.ini` files
 
 ## Notes
 

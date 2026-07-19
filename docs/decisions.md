@@ -63,3 +63,21 @@ passing a single file path.
 **Consequences:** Adding a new field means editing the struct and
 loadVehicleParameters — a small, acceptable cost for keeping
 VehicleParameters typed and explicit instead of a generic key lookup.
+
+## ADR 005: Represent load failures with VehicleLoadResult and std::optional
+
+**Date:** 2026-07-19
+
+**Context:** Missing or invalid INI files/keys could crash the program
+(e.g. std::out_of_range when a required file did not exist).
+
+**Decision:** IniValueParsing functions now return std::optional,
+signaling absence instead of throwing or returning garbage.
+loadVehicleParameters returns a VehicleLoadResult (isValid + message +
+parameters), stopping at the first missing/invalid field with a
+specific diagnostic message.
+
+**Consequences:** Callers must check isValid before using parameters.
+Adding a synthetic fixture test suite (tests/fixtures/sample_vehicle)
+caught a real crash during development, confirming the value of
+testing failure paths.
