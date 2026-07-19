@@ -9,6 +9,11 @@ struct VehicleParameters {
     double totalMass = 0.0;
     std::string traction;
     int gearCount = 0;
+    double finalDriveRatio = 0.0;
     std::string frontSuspensionType;
     std::string rearSuspensionType;
+    double wheelBase = 0.0;
+    double cgLocation = 0.0;
+    double frontTyreRadius = 0.0;
+    double rearTyreRadius = 0.0;
 };
