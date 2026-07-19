@@ -11,5 +11,10 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(mini)
 
-add_executable(apexdyn src/main.cpp src/DirectoryInspection.cpp)
+add_executable(apexdyn
+        src/main.cpp
+        src/DirectoryInspection.cpp
+        src/IniValueParsing.cpp
+        src/VehicleLoader.cpp
+)
 target_include_directories(apexdyn PRIVATE include ${mini_SOURCE_DIR}/src)

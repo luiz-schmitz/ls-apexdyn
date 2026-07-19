@@ -1,6 +1,6 @@
 #include <iostream>
 #include "DirectoryInspection.h"
-#include "mini/ini.h"
+#include "VehicleLoader.h"
 
 int main(int argc, char* argv[]) {
     if (argc < 3) {
@@ -16,6 +16,10 @@ int main(int argc, char* argv[]) {
     if (!outcome.isValid) {
         return 1;
     }
+
+    std::filesystem::path carIniPath = dataDir / "car.ini";
+    VehicleParameters vehicle = loadVehicleParameters(carIniPath);
+    std::cout << "total mass: " << vehicle.totalMass << " kg" << std::endl;
 
     return 0;
 }
