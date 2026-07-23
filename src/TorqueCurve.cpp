@@ -51,3 +51,26 @@ TorqueCurveLoadResult loadTorqueCurve(const std::filesystem::path& lutPath) {
     result.message = "success";
     return result;
 }
+
+std::optional<double> interpolateTorque(const std::vector<TorqueCurvePoint>& curve, double rpm) {
+    if (curve.empty()) {
+        return std::nullopt;
+    }
+
+    if (rpm <= curve.front().rpm) {
+        return curve.front().torque;
+    }
+    if (rpm >= curve.back().rpm) {
+        return curve.back().torque;
+    }
+
+    size_t i = 0;
+    while (i < curve.size() - 1 && rpm > curve[i].rpm) {
+        i++;
+    }
+
+    const TorqueCurvePoint& lower = curve[i - 1];
+    const TorqueCurvePoint& upper = curve[i];
+
+    return lower.torque + (upper.torque - lower.torque) / (upper.rpm - lower.rpm) * (rpm - lower.rpm);
+}

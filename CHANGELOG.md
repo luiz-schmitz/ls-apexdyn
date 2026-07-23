@@ -20,7 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - - `VehicleLoadResult` struct: signals success/failure when loading vehicle parameters, with a diagnostic message
 - Error handling in `IniValueParsing` (`readDoubleValue`/`readIntValue`/`readStringValue` now return `std::optional`) to avoid crashes on missing or invalid INI values
 - File-existence checks in `VehicleLoader` before attempting to read each INI file
-- `VehicleLoader` test suite (`tests/VehicleLoaderTests.cpp`) using synthetic fixture data (`tests/fixtures/sample_vehicle/`)
+- `VehicleLoader` test suite (`tests/AllTests.cpp`) using synthetic fixture data (`tests/fixtures/sample_vehicle/`)
 - `wheelBase`, `cgLocation`, `finalDriveRatio`, `frontTyreRadius`, `rearTyreRadius` fields in `VehicleParameters`
 - `TorqueCurve` module (`loadTorqueCurve`): parses engine torque curves from `.lut` files (RPM|Torque pairs) into `TorqueCurvePoint` vectors, returned via `TorqueCurveLoadResult` for error handling
 

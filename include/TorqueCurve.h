@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <filesystem>
+#include <optional>
 
 /// A single point on an engine's torque curve: torque (Nm) at a given RPM.
 struct TorqueCurvePoint {
@@ -19,3 +20,6 @@ struct TorqueCurveLoadResult {
 
 /// Reads a .lut file (RPM|Torque pairs, one per line) into a vector of points.
 TorqueCurveLoadResult loadTorqueCurve(const std::filesystem::path& lutPath);
+
+/// Linearly interpolates torque (Nm) at a given RPM from a torque curve. Returns std::nullopt if the curve is empty.
+std::optional<double> interpolateTorque(const std::vector<TorqueCurvePoint>&, double rpm);

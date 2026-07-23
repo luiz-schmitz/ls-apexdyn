@@ -24,10 +24,12 @@ add_executable(apexdyn
 )
 
 add_executable(vehicle_loader_tests
-        tests/VehicleLoaderTests.cpp
+        tests/AllTests.cpp
         src/VehicleLoader.cpp
         src/IniValueParsing.cpp
+        src/TorqueCurve.cpp
 )
+
 target_include_directories(vehicle_loader_tests PRIVATE include ${mini_SOURCE_DIR}/src ${CMAKE_BINARY_DIR}/generated)
 
 add_test(NAME VehicleLoaderTests COMMAND vehicle_loader_tests)

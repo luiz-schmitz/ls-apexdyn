@@ -47,5 +47,20 @@ int main(int argc, char* argv[]) {
     std::cout << "first point: rpm=" << curveResult.points.front().rpm << " torque=" << curveResult.points.front().torque << std::endl;
     std::cout << "last point: rpm=" << curveResult.points.back().rpm << " torque=" << curveResult.points.back().torque << std::endl;
 
+    auto torqueAt3200 = interpolateTorque(curveResult.points, 3200.0);
+    if (torqueAt3200) {
+        std::cout << "torque at 3200 RPM: " << *torqueAt3200 << std::endl;
+    }
+
+    auto torqueAtZero = interpolateTorque(curveResult.points, -500.0);
+    if (torqueAtZero) {
+        std::cout << "torque at -500 RPM (clamped): " << *torqueAtZero << std::endl;
+    }
+
+    auto torqueAtHigh = interpolateTorque(curveResult.points, 12000.0);
+    if (torqueAtHigh) {
+        std::cout << "torque at 12000 RPM (clamped): " << *torqueAtHigh << std::endl;
+    }
+
     return 0;
 }
