@@ -2,6 +2,7 @@
 #include <cassert>
 #include "VehicleLoader.h"
 #include "TestConfig.h"
+#include "TorqueCurve.h"
 
 int main() {
     std::filesystem::path sampleVehicleDir = std::filesystem::path(kTestFixturesDir) / "sample_vehicle";
@@ -21,6 +22,31 @@ int main() {
     assert(vehicle.frontTyreRadius == 0.3);
     assert(vehicle.rearTyreRadius == 0.32);
 
+
     std::cout << "All VehicleLoader tests passed." << std::endl;
+
+    std::vector<TorqueCurvePoint> curve = {
+        {1000.0, 100.0},
+        {2000.0, 200.0},
+        {3000.0, 150.0}
+    };
+
+    std::vector<TorqueCurvePoint> emptyCurve;
+    auto emptyResult = interpolateTorque(emptyCurve, 1500.0);
+    assert(!emptyResult.has_value());
+
+    auto belowResult = interpolateTorque(curve, 500.0);
+    assert(belowResult.has_value());
+    assert(*belowResult == 100.0);
+
+    auto aboveResult = interpolateTorque(curve, 5000.0);
+    assert(aboveResult.has_value());
+    assert(*aboveResult == 150.0);
+
+    auto averageResult = interpolateTorque(curve, 1500.0);
+    assert(averageResult.has_value());
+    assert(*averageResult == 150.0);
+
+    std::cout << "All TorqueCurve tests passed." << std::endl;
     return 0;
 }
