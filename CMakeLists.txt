@@ -21,6 +21,7 @@ add_executable(apexdyn
         src/IniValueParsing.cpp
         src/VehicleLoader.cpp
         src/TorqueCurve.cpp
+        src/Drivetrain.cpp
 )
 
 add_executable(vehicle_loader_tests

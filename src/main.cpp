@@ -1,5 +1,6 @@
 #include <iostream>
 #include "DirectoryInspection.h"
+#include "Drivetrain.h"
 #include "VehicleLoader.h"
 #include "TorqueCurve.h"
 
@@ -65,6 +66,17 @@ int main(int argc, char* argv[]) {
     auto torqueAtHigh = interpolateTorque(curveResult.points, 12000.0);
     if (torqueAtHigh) {
         std::cout << "torque at 12000 RPM (clamped): " << *torqueAtHigh << std::endl;
+    }
+
+    double speed = vehicleSpeed(2000, vehicle.gearRatios[2], vehicle.finalDriveRatio, vehicle.rearTyreRadius);
+    double engrpm = engineRpm(speed, vehicle.gearRatios[2], vehicle.finalDriveRatio, vehicle.rearTyreRadius);
+    std::cout << "speed: " << speed << " m/s at: " << engrpm << " rpm" << std::endl;
+
+    std::optional<double> force = wheelForce(curveResult.points, vehicle.gearRatios[2], vehicle.finalDriveRatio, vehicle.rearTyreRadius, speed);
+    if (force) {
+        std::cout << "wheel force: " << *force << " N" << std::endl;
+    } else {
+        std::cout << "wheel force: could not be computed" << std::endl;
     }
 
     return 0;
