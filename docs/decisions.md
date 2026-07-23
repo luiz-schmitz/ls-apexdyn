@@ -81,3 +81,22 @@ specific diagnostic message.
 Adding a synthetic fixture test suite (tests/fixtures/sample_vehicle)
 caught a real crash during development, confirming the value of
 testing failure paths.
+
+## ADR 006: Compute wheel force from torque curve and drivetrain ratios
+
+**Date:** 2026-07-23
+
+**Context:** VehicleParameters held enough data (torque curve, gear
+ratios, final drive, tyre radius) to compute a real physical quantity,
+but no calculation existed yet — the project was still limited to
+data ingestion.
+
+**Decision:** Introduce a Drivetrain module with vehicleSpeed/engineRpm
+(RPM ↔ speed conversions for a given gear) and wheelForce (torque
+curve interpolation + gear ratios → wheel force in Newtons).
+
+**Consequences:** This is the project's first computed engineering
+output. vehicleSpeed and engineRpm were validated as inverses of each
+other via round-trip testing (RPM → speed → RPM). wheelForce was
+sanity-checked against physically plausible values for the test
+vehicle (AE86).

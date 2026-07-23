@@ -16,15 +16,14 @@ This project is being developed step by step as a learning exercise in:
 
 ## Current status
 
-`apexdyn` can inspect a vehicle's data directory, load a subset of its physical parameters (mass, traction, gear count, final drive ratio, wheelbase, CG location, tyre radii, suspension types) from Assetto Corsa `.ini` files, and parse the engine's torque curve from `.lut` files — all into typed models with error handling for missing or malformed data.
+`apexdyn` can inspect a vehicle's data directory, load its physical parameters (mass, drivetrain, suspension, tyres) from Assetto Corsa `.ini` files, parse the engine's torque curve from `.lut` files, and compute wheel force at a given gear and vehicle speed — the first real engineering calculation in the project, combining torque curve interpolation with drivetrain ratios.
 
 See [`CHANGELOG.md`](CHANGELOG.md) for the full history of what has been implemented, and [`docs/decisions.md`](docs/decisions.md) for the reasoning behind key architectural decisions.
 
 **Planned next:**
-- Torque curve interpolation
-- Wheel force vs. vehicle speed per gear
+- Wheel force vs. vehicle speed curves across all gears (for CSV export)
+- Longitudinal resistances (drag, rolling resistance)
 - Longitudinal acceleration simulation
-- CSV/report output
 - Comparison against Assetto Corsa telemetry data
 
 ## Building
@@ -48,18 +47,6 @@ apexdyn inspect <data-directory>
 
 Validates that `<data-directory>` exists and is a directory, counts `.ini`/`.lut` files within it, and loads available vehicle parameters.
 
-**Example:**
-```powershell
-apexdyn inspect C:\path\to\vehicle\data
-found 28 .ini file(s) and 18 .lut file(s) in C:\path\to\vehicle\data
-car name: TOYOTA AE86
-total mass: 995 kg
-traction: RWD
-gear count: 5
-front suspension: STRUT
-rear suspension: AXLE
-```
-
 **Exit codes:**
 - `0` — success
 - `1` — invalid arguments, or the path does not exist / is not a directory
@@ -72,10 +59,12 @@ This project is developed against Assetto Corsa vehicle data files, extracted lo
 
 The codebase separates concerns as the project grows:
 
-- `include/InspectionOutcome.h` / `include/DirectoryInspection.h` + `src/DirectoryInspection.cpp` — directory validation and file counting, decoupled from CLI argument handling
-- `include/IniValueParsing.h` + `src/IniValueParsing.cpp` — generic, typed extraction of values from INI files (via the [mINI](https://github.com/pulzed/mINI) library)
-- `include/VehicleParameters.h` — a data-only model of a vehicle's physical parameters, independent of its data source
-- `include/VehicleLoader.h` + `src/VehicleLoader.cpp` — translates Assetto Corsa files into a `VehicleParameters` instance
-- `src/main.cpp` — thin orchestration layer (argument parsing, invoking inspection/loading, reporting results)
+- `include/InspectionOutcome.h` / `include/DirectoryInspection.h` + `src/DirectoryInspection.cpp` - directory validation and file counting, decoupled from CLI argument handling
+- `include/IniValueParsing.h` + `src/IniValueParsing.cpp` - generic, typed extraction of values from INI files (via the [mINI](https://github.com/pulzed/mINI) library)
+- `include/VehicleParameters.h` - a data-only model of a vehicle's physical parameters, independent of its data source
+- `include/VehicleLoader.h` + `src/VehicleLoader.cpp` - translates Assetto Corsa files into a `VehicleParameters` instance
+- `include/TorqueCurve.h` + `src/TorqueCurve.cpp` - parses engine torque curves from `.lut` files and interpolates torque at a given RPM
+- `include/Drivetrain.h` + `src/Drivetrain.cpp` - RPM/speed conversions and wheel force calculations for a given gear
+- `src/main.cpp` - thin orchestration layer (argument parsing, invoking inspection/loading, reporting results)
 
 Design decisions are logged in [`docs/decisions.md`](docs/decisions.md) as the project evolves.

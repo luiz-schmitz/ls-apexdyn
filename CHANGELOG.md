@@ -15,7 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `VehicleParameters` struct: an independent, typed model of a vehicle's physical parameters
 - `VehicleLoader` module (`loadVehicleParameters`): aggregates `car.ini`, `drivetrain.ini`, and `suspensions.ini` from a vehicle's data directory into a `VehicleParameters` instance
     - Fields: car name, total mass, traction type, gear count, front/rear suspension type
-- `docs/decisions.md`: architecture decision log (ADR 001–004)
+- `docs/decisions.md`: architecture decision log
 - Project `README.md`
 - - `VehicleLoadResult` struct: signals success/failure when loading vehicle parameters, with a diagnostic message
 - Error handling in `IniValueParsing` (`readDoubleValue`/`readIntValue`/`readStringValue` now return `std::optional`) to avoid crashes on missing or invalid INI values
@@ -23,6 +23,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `VehicleLoader` test suite (`tests/AllTests.cpp`) using synthetic fixture data (`tests/fixtures/sample_vehicle/`)
 - `wheelBase`, `cgLocation`, `finalDriveRatio`, `frontTyreRadius`, `rearTyreRadius` fields in `VehicleParameters`
 - `TorqueCurve` module (`loadTorqueCurve`): parses engine torque curves from `.lut` files (RPM|Torque pairs) into `TorqueCurvePoint` vectors, returned via `TorqueCurveLoadResult` for error handling
+- `gearRatios` field in `VehicleParameters`, loading individual gear ratios (`GEAR_1`...`GEAR_N`) from `drivetrain.ini`
+- `Drivetrain` module: `vehicleSpeed` (RPM → vehicle speed) and `engineRpm` (vehicle speed → RPM) conversions for a given gear
+- `wheelForce`: computes wheel force available at a given gear and vehicle speed, combining torque curve interpolation with gear ratio, final drive ratio, and tyre radius — the project's first computed engineering result, not just ingested data
 
 ### Changed
 - `loadVehicleParameters` now accepts a vehicle data directory instead of a single `car.ini` path, resolving all required files internally
