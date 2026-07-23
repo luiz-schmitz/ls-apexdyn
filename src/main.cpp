@@ -29,6 +29,11 @@ int main(int argc, char* argv[]) {
     std::cout << "total mass: " << vehicle.totalMass << " kg" << std::endl;
     std::cout << "traction: " << vehicle.traction << std::endl;
     std::cout << "gear count: " << vehicle.gearCount << std::endl;
+    std::cout << "gear ratios: ";
+    for (int i = 0; i < vehicle.gearCount; i++) {
+        std::cout << vehicle.gearRatios[i] << " ";
+    }
+    std::cout << std::endl;
     std::cout << "front suspension: " << vehicle.frontSuspensionType << std::endl;
     std::cout << "rear suspension: " << vehicle.rearSuspensionType << std::endl;
     std::cout << "final drive ratio: " << vehicle.finalDriveRatio << std::endl;

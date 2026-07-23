@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 /// Physical parameters describing a vehicle, independent of the
 /// data source they were loaded from (e.g. Assetto Corsa files).
@@ -9,6 +10,7 @@ struct VehicleParameters {
     double totalMass = 0.0;
     std::string traction;
     int gearCount = 0;
+    std::vector<double> gearRatios;
     double finalDriveRatio = 0.0;
     std::string frontSuspensionType;
     std::string rearSuspensionType;

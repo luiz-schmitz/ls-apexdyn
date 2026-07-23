@@ -14,6 +14,12 @@ int main() {
     assert(vehicle.totalMass == 1000.0);
     assert(vehicle.traction == "RWD");
     assert(vehicle.gearCount == 5);
+    assert(vehicle.gearRatios.size() == 5);
+    assert(vehicle.gearRatios[0] == 3.0);
+    assert(vehicle.gearRatios[1] == 2.0);
+    assert(vehicle.gearRatios[2] == 1.5);
+    assert(vehicle.gearRatios[3] == 1.0);
+    assert(vehicle.gearRatios[4] == 0.8);
     assert(vehicle.finalDriveRatio == 4.0);
     assert(vehicle.wheelBase == 2.5);
     assert(vehicle.cgLocation == 0.5);

@@ -62,6 +62,15 @@ VehicleLoadResult loadVehicleParameters(const std::filesystem::path& dataDir) {
     if (!gearCount) return fail("missing or invalid drivetrain.ini [GEARS] COUNT");
     params.gearCount = *gearCount;
 
+    for (int i = 1; i <= params.gearCount; i++) {
+        std::string key = "GEAR_" + std::to_string(i);
+        auto ratio = readDoubleValue(drivetrainIni, "GEARS", key);
+        if (!ratio) {
+            return fail("missing or invalid drivetrain.ini [GEARS] " + key);
+        }
+        params.gearRatios.push_back(*ratio);
+    }
+
     auto finalDriveRatio = readDoubleValue(drivetrainIni, "GEARS", "FINAL");
     if (!finalDriveRatio) return fail("missing or invalid drivetrain.ini [GEARS] FINAL");
     params.finalDriveRatio = *finalDriveRatio;
